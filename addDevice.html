@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--linking the 2 stylesheets-->
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <link href="addDeviceStyleSheet.css" rel="stylesheet" type="text/css">
+    <!--title of the webpage-->
+    <title>Add Device : AudioVizzion</title>
+
+    <!--the javacsript used to execute the php file connect.php-->
+    <script>
+        //function connect to execute connect.php
+        function connect() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "connect.php");
+            xmlhttp.send();
+
+        }
+    </script>
+</head>
+
+<!--the body calls the connect function onload-->
+
+<body onload="connect()">
+    <h1>AudioVizzion</h1>
+    <!--when the user clicks the submit button the insert.php is called -->
+    <form action="insert.php" method="POST">
+        <fieldset>
+            <legend>Add Device</legend>
+            <label for="dCID">Device Catalog ID *</label>
+            <input type="text" id="dCID" name="dCID" maxlength="5" placeholder="d0001" required><br><br>
+            <label for="dCName">Device Catalog Name *</label>
+            <input type="text" id="dCName"  name="dCName" placeholder="Optica Vision Lens" required><br><br>
+
+            <label for="dDescript">Device Description *</label>
+            <input type="text" id="dDescript" name="dDescript" placeholder="Anti-Scratch" required><br><br>
+
+            <label for="availabilityStatus">Availability Status *</label><br>
+            <input type="radio" id="availabilityStatus2" name="availabilityStatus" value="in stock" checked>In
+            stock<br><br>
+            <input type="radio" id="availabilityStatus1" name="availabilityStatus"
+                value="currently being ordered">Currently
+            being ordered<br><br>
+
+            <!--the user can choose the type of device they would want to enter-->
+            <label for="typeDevice">Type of Device *</label><br>
+
+            <!--if this radio button is chosen then addHearingDevice function is called-->
+            <input type="radio" id="typeDevice1" name="typeDevice" value="hearing"
+                onclick="addHearingDevice()"><label>Hearing
+                Device</label><br><br>
+
+            <!--if this radio button is chosen then addVisualDevice function is called-->
+            <input type="radio" id="typeDevice2" name="typeDevice" value="visual"
+                onclick="addVisualDevice()"><label>Visual Device</label><br><br>
+
+            <div id="hearingDevice">
+                <label for="hdMake">Hearing Device Make *</label>
+                <input type="text" id="hdMake" name="hdMake" placeholder="Phonak"><br><br>
+
+                <label for="hdModel">Hearing Device Model *</label>
+                <input type="text" id="hdModel" name="hdModel" placeholder="Audeo Marvel"><br><br>
+            </div>
+
+            <div id="visualDevice">
+                <label for="vTypeDevice">Type of Visual Device *</label><br><br>
+
+                <!--if this radio button is chosen then addFrame function is called-->
+                <input type="radio" id="vTypeDevice1" name="vTypeDevice" value="frame" onclick="addFrame()"
+                    checked><label> Frame</label><br>
+
+                <!--if this radio button is chosen then addlens function is called-->
+                <input type="radio" id="vTypeDevice2" name="vTypeDevice" value="lens"
+                    onclick="addLens()"><label>Lens</label><br>
+
+                <!--if this radio button is chosen then addSpectacles function is called-->
+                <input type="radio" id="vTypeDevice3" name="vTypeDevice" value="both"
+                    onclick="addSpectacles()"><label>Spectacles (Frames and
+                    Lenses)</label><br><br>
+
+                <div id="frameDevice">
+                    <label for="frBrand">Frame Brand *</label>
+                    <input type="text" id="frBrand" name="frBrand" placeholder="Armani" maxlength="40"><br><br>
+
+                    <label for="frModel">Frame Model *</label>
+                    <input type="text" id="frModel" name="frModel" placeholder="Armani234" maxlength="40"><br><br>
+                </div>
+
+                <div id="lensDevice">
+                    <label for="vdLensSerialNo">Lens Serial Number *</label>
+                    <input type="text" id="vdLensSerialNo" name="vdLensSerialNo" placeholder="opto23334355" maxlength="
+                15"><br><br>
+
+                    <label for="vdLensVisionType">Lens Vision Type *</label>
+                    <input type="text" id="vdLensVisionType" name="vdLensVisionType" placeholder="long-sightedness"
+                        maxlength="320"><br><br>
+
+                    <label for="vdLensTint">Lens Tint *</label>
+                    <input type="text" id="vdLensTint" name="vdLensTint" placeholder="Clear" maxlength="15"><br><br>
+
+                    <label for="vdLensThinnessLevel">Lens Thinness Level *</label>
+                    <input type="text" id="vdLensThinnessLevel" name="vdLensThinnessLevel" placeholder="Standard"
+                        maxlength="30"><br><br>
+                </div>
+
+            </div><br>
+
+            <input class="submitButton" type="submit" value="SUBMIT">
+            <input class="clearButton" type="reset" value="CLEAR">
+
+        </fieldset>
+    </form>
+
+    <script>
+        //function used to show the visualDevice div tag
+        function addVisualDevice() {
+            document.getElementById("visualDevice").style.display = "block";
+            document.getElementById("hearingDevice").style.display = "none";
+            assignRequiredHearingDeviceFields(false);
+            assignRequiredFrameDeviceFields(true);
+        }
+
+        //function used to show the hearingDevice div tag
+        function addHearingDevice() {
+            document.getElementById("hearingDevice").style.display = "block";
+            document.getElementById("visualDevice").style.display = "none";
+            assignRequiredHearingDeviceFields(true);
+            assignRequiredFrameDeviceFields(false);
+            assignRequiredLensDeviceFields(false);
+        }
+
+        //function used to show the lensDevice div tag
+        function addLens() {
+            document.getElementById("lensDevice").style.display = "block";
+            document.getElementById("frameDevice").style.display = "none";
+            assignRequiredLensDeviceFields(true);
+            assignRequiredFrameDeviceFields(false);
+        }
+
+        //function used to show the frameDevice div tag
+        function addFrame() {
+            document.getElementById("frameDevice").style.display = "block";
+            document.getElementById("lensDevice").style.display = "none";
+            assignRequiredFrameDeviceFields(true);
+            assignRequiredLensDeviceFields(false);
+        }
+
+        //function used to show the lensDevice and frameDevice div tag
+        function addSpectacles() {
+            document.getElementById("lensDevice").style.display = "block";
+            document.getElementById("frameDevice").style.display = "block";
+            assignRequiredFrameDeviceFields(true);
+            assignRequiredLensDeviceFields(true);
+        }
+
+        //changes the required attribute of the input fields of the hearingDevice div tag to true or false based on the value passed
+        function assignRequiredHearingDeviceFields(value) {
+            document.getElementById("hdMake").required = value;
+            document.getElementById("hdModel").required = value;
+        }
+
+        //changes the required attribute of the input fields of the lensDevice div tag to true or false based on the value passed
+        function assignRequiredLensDeviceFields(value) {
+            document.getElementById("vdLensSerialNo").required = value;
+            document.getElementById("vdLensVisionType").required = value;
+            document.getElementById("vdLensTint").required = value;
+            document.getElementById("vdLensThinnessLevel").required = value;
+        }
+
+        //changes the required attribute of the input fields of the frameDevice div tag to true or false based on the value passed
+        function assignRequiredFrameDeviceFields(value) {
+            document.getElementById("frBrand").required = value;
+            document.getElementById("frModel").required = value;
+        }
+    </script>
+
+    <footer>
+        <!--to get the copyright sypmbol-->
+        &copy; w1714855_AudioVizzion | All rights Reserved
+    </footer>
+
+</body>
+
+</html>
